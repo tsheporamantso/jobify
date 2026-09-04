@@ -19,5 +19,6 @@ module.exports = {
   parserPreset: './commitlint-parser-preset.js',
   rules: {
     'type-enum': [2, 'always', TYPES],
+    'type-empty': [2, 'never'],
   },
 };

@@ -18,11 +18,17 @@ Only use the following emojis:
 
 - ✨ `feat:` - New feature
 - 🐛 `fix:` - Bug fix
-- 🪛 `refactor:` - Refactoring code
 - 📖 `docs:` - Documentation
 - 🖌️ `style:` - Styling/formatting
+- 📦 `refactor:` - Refactoring code
+- ⚡ `perf:` - Performance
 - ✅ `test:` - Tests
-- ⚡`perf:` - Performance
+- 🛠 `build:` - Build system or external dependencies
+- ⚙️ `ci:` - CI/CD changes
+- ♻️ `chore:` - Other changes that don't modify src or test files
+- 🗑 `revert:` - Reverts a previous commit
+- 🔥 `hotfix:` - Urgent fix
+- 🎉 `init:` - Initial commit or project initialization
 
 ## Format:
 
