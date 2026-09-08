@@ -21,8 +21,8 @@ export default function Home() {
             architecto non veritatis sit illo adipisci minus et libero magnam
             enim eligendi accusantium accusamus.
           </p>
-          <Button variant={"link"} className="mt-4">
-            <Link href="/add-job">Get Started</Link>
+          <Button nativeButton={false} render={<Link href="/add-job" />} className="mt-4">
+            Get Started
           </Button>
         </div>
         <Image src={LandingImg} alt="landing" className="hidden lg:block " />
