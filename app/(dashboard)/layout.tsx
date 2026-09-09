@@ -14,8 +14,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
       {/* second col hide dropdown on big screen */}
       <div className="lg:col-end-4">
         <Navbar />
+        <div className="py-16 px-4 sm:px-8 lg:px-16">{children}</div>
       </div>
-      <div className="py-16 px-4 sm:px-8 lg:px-16">{children}</div>
     </main>
   );
 }
