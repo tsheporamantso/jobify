@@ -8,7 +8,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <main className="grid lg:grid-cols-5">
       {/* first col hide on small screen */}
-      <div className="hidden lg:block lg:col-span-1 lg:min-h-screen">
+      <div className="hidden lg:block lg:col-span-1 lg:min-h-screen lg:sticky lg:top-0">
         <Sidebar />
       </div>
       {/* second col hide dropdown on big screen */}
