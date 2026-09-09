@@ -36,10 +36,10 @@ const formSchema = z.object({
   mode: z.enum(["full-time", "part-time", "remote"]),
 });
 
-type Job = z.infer<typeof formSchema>;
+type CreateJobInput = z.infer<typeof formSchema>;
 
 function CreateJobForm() {
-  const form = useForm<Job>({
+  const form = useForm<CreateJobInput>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       position: "",
