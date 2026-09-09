@@ -1,4 +1,10 @@
-function layout({ children }: { children: React.ReactNode }) {
+import { auth } from "@clerk/nextjs/server";
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  await auth.protect();
   return <div>{children}</div>;
 }
-export default layout;
