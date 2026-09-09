@@ -19,7 +19,9 @@ const Sidebar = () => {
             <Button
               key={link.href}
               variant={pathname === link.href ? "default" : "link"}
-              render={<Link href={link.href} className="flex items-center gap-x-2" />}
+              render={
+                <Link href={link.href} className="flex items-center gap-x-2" />
+              }
               nativeButton={false}
             >
               {link.icon}
