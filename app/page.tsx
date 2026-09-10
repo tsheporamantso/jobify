@@ -3,12 +3,14 @@ import Logo from "../assets/logo.svg";
 import LandingImg from "../assets/main.svg";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ModeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   return (
     <main>
-      <header className="max-w-6xl mx-auto px-4 sm:px-8 py-6 ">
+      <header className="flex items-center justify-between max-w-6xl mx-auto px-4 sm:px-8 py-6 ">
         <Image src={Logo} alt="logo" />
+        <ModeToggle />
       </header>
       <section className="max-w-6xl mx-auto px-4 sm:px-8 h-screen -mt-20 grid lg:grid-cols-[1fr_400px] items-center">
         <div>
@@ -21,7 +23,11 @@ export default function Home() {
             architecto non veritatis sit illo adipisci minus et libero magnam
             enim eligendi accusantium accusamus.
           </p>
-          <Button nativeButton={false} render={<Link href="/add-job" />} className="mt-4">
+          <Button
+            nativeButton={false}
+            render={<Link href="/add-job" />}
+            className="mt-4"
+          >
             Get Started
           </Button>
         </div>
