@@ -36,7 +36,7 @@ const formSchema = z.object({
   mode: z.enum(["full-time", "part-time", "remote"]),
 });
 
-type CreateJobInput = z.infer<typeof formSchema>;
+export type CreateJobInput = z.infer<typeof formSchema>;
 
 function CreateJobForm() {
   const form = useForm<CreateJobInput>({
