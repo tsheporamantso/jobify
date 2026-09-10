@@ -16,7 +16,7 @@ const TYPES = [
 
 module.exports = {
   extends: ['@commitlint/config-conventional'],
-  parserPreset: './commitlint-parser-preset.js',
+  parserPreset: './commitlint-parser-preset.cjs',
   rules: {
     'type-enum': [2, 'always', TYPES],
     'type-empty': [2, 'never'],
