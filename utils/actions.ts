@@ -1,9 +1,11 @@
+"use server";
+
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
-import { CreateJobInput } from "@/components/CreateJobForm";
+import { type CreateJobInput } from "@/components/CreateJobForm";
 import { type JobType } from "./types";
 
 async function authenticateAndRedirect(): Promise<string> {

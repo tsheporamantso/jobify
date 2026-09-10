@@ -21,6 +21,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createJobAction } from "@/utils/actions";
+import { toast } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   position: z.string().min(2, {
@@ -50,8 +54,29 @@ function CreateJobForm() {
     },
   });
 
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { mutate, isPending } = useMutation({
+    mutationFn: (values: CreateJobInput) => createJobAction(values),
+    onSuccess: (data) => {
+      if (!data) {
+        toast.add({
+          description: "there was an error",
+        });
+        return;
+      }
+      toast.add({ description: "job created" });
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["stats"] });
+      queryClient.invalidateQueries({ queryKey: ["charts"] });
+
+      router.push("/jobs");
+      // form.reset();
+    },
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    mutate(values);
   }
 
   return (
@@ -148,8 +173,8 @@ function CreateJobForm() {
           )}
         />
         <div className="sm:col-span-2 lg:col-start-3 self-end">
-          <Button type="submit" className="w-full">
-            Submit
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "loading..." : "create job"}
           </Button>
         </div>
       </form>
