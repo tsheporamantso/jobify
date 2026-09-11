@@ -34,7 +34,7 @@ export async function createJobAction(
         clerkId: userId,
       },
     });
-    return job;
+    return job as JobType;
   } catch (error) {
     console.error(error);
     return null;
@@ -84,13 +84,13 @@ export async function getAllJobsAction({
       };
     }
 
-    const jobs: JobType[] = await prisma.job.findMany({
+    const jobs = await prisma.job.findMany({
       where: whereClause,
       orderBy: {
         createdAt: "desc",
       },
     });
-    return { jobs, count: 0, page: 1, totalPages: 0 };
+    return { jobs: jobs as JobType[], count: 0, page: 1, totalPages: 0 };
   } catch (error) {
     console.error(error);
     return { jobs: [], count: 0, page: 1, totalPages: 0 };
