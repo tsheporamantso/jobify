@@ -25,6 +25,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createJobAction } from "@/utils/actions";
 import { toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
+import { JOB_MODES, JOB_STATUSES } from "@/utils/types";
 
 const formSchema = z.object({
   position: z.string().min(2, {
@@ -36,8 +37,8 @@ const formSchema = z.object({
   location: z.string().min(2, {
     message: "Location is required.",
   }),
-  status: z.enum(["pending", "interview", "declined"]),
-  mode: z.enum(["full-time", "part-time", "remote"]),
+  status: z.enum(JOB_STATUSES),
+  mode: z.enum(JOB_MODES),
 });
 
 export type CreateJobInput = z.infer<typeof formSchema>;
@@ -49,8 +50,8 @@ function CreateJobForm() {
       position: "",
       company: "",
       location: "",
-      status: "pending",
-      mode: "full-time",
+      status: JOB_STATUSES[0],
+      mode: JOB_MODES[0],
     },
   });
 
@@ -61,11 +62,12 @@ function CreateJobForm() {
     onSuccess: (data) => {
       if (!data) {
         toast.add({
-          description: "there was an error",
+          type: "error",
+          description: "There was an error.",
         });
         return;
       }
-      toast.add({ description: "job created" });
+      toast.add({ type: "success", description: "Job created successfully." });
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
       queryClient.invalidateQueries({ queryKey: ["charts"] });
@@ -136,7 +138,7 @@ function CreateJobForm() {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["pending", "interview", "declined"].map((status) => (
+                    {JOB_STATUSES.map((status) => (
                       <SelectItem key={status} value={status}>
                         {status.charAt(0).toUpperCase() + status.slice(1)}
                       </SelectItem>
@@ -160,7 +162,7 @@ function CreateJobForm() {
                     <SelectValue placeholder="Select mode" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["full-time", "part-time", "remote"].map((mode) => (
+                    {JOB_MODES.map((mode) => (
                       <SelectItem key={mode} value={mode}>
                         {mode.charAt(0).toUpperCase() + mode.slice(1)}
                       </SelectItem>
