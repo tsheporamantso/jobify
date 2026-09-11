@@ -1,5 +1,5 @@
 function loading() {
-  return <h2 className="text-xl front-medium capitalize">loading...</h2>;
+  return <h2 className="text-xl font-medium capitalize">loading...</h2>;
 }
 
 export default loading;
