@@ -61,11 +61,12 @@ function CreateJobForm() {
     onSuccess: (data) => {
       if (!data) {
         toast.add({
-          description: "there was an error",
+          type: "error",
+          description: "There was an error.",
         });
         return;
       }
-      toast.add({ description: "job created" });
+      toast.add({ type: "success", description: "Job created successfully." });
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
       queryClient.invalidateQueries({ queryKey: ["charts"] });

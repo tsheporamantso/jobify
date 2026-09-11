@@ -11,42 +11,54 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Stack
 
 - **Next.js 16.3.4** (App Router) — read `node_modules/next/dist/docs/` before using any Next.js API
-- **React 19.2.8**
-- **Tailwind CSS v4** — uses `@tailwindcss/postcss`, no `tailwind.config.*` file; all config in CSS via `@theme`
-- **TypeScript** (strict mode) — `@/*` path alias maps to project root
-- **ESLint v9** — flat config in `eslint.config.mjs`, uses `eslint-config-next` presets
+- **React 19.2.8**, TypeScript strict — `@/*` path alias maps to project root
+- **Tailwind CSS v4** — `@tailwindcss/postcss`, no `tailwind.config.*`; theme via `@theme` in `app/globals.css`
+- **ESLint v9** — flat config in `eslint.config.mjs`
+- **Prisma 6 + MongoDB** — config in `prisma.config.ts`, datasource from `DATABASE_URL` (`.env.example`)
+- **Clerk** auth — `proxy.ts` middleware; server actions call `auth()` and `redirect("/")` when unauthenticated
+- **TanStack Query**, Base UI, shadcn `ui/` components
 
 ## Commands
 
 ```bash
-npm run dev        # start dev server (localhost:3000)
-npm run build      # production build
-npm run lint       # eslint
+npm run dev            # dev server (localhost:3000)
+npm run build          # production build
+npm run lint           # eslint (flat config)
+npx tsc --noEmit       # typecheck (no npm script)
+npx prisma generate    # required after editing prisma/schema.prisma
+npx prisma db push     # sync schema to MongoDB
 ```
 
-No test runner configured yet. No typecheck script — use `npx tsc --noEmit` for type checking.
+No test runner configured. No pre-commit lint hook — only commitlint on commit-msg.
 
 ## Commit conventions
 
-Husky + commitlint enforce conventional commits with emoji prefix:
+Husky runs `commitlint` on commit-msg; config in `commitlint.config.cjs` + `commitlint-parser-preset.cjs`:
 
-```
-<emoji> <type>(optional scope): <description>
-```
-
-Allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`, `hotfix`, `init`
-
-Config: `commitlint.config.js` + `commitlint-parser-preset.js`
+- Format: `<emoji> <type>(optional scope): <description>`
+- Allowed types: `feat fix docs style refactor perf test build ci chore revert hotfix init`
+- Body lines must be ≤ 100 chars (`body-max-line-length` from config-conventional)
+- Use present tense and explain *why*, not just *what*
+- Emoji mapping lives in `.opencode/commands/commit-message.md`
 
 ## Key paths
 
-- `app/` — App Router pages and layouts (currently scaffold only)
-- `public/` — static assets
-- `next.config.ts` — Next.js config (currently empty)
-- `postcss.config.mjs` — PostCSS with `@tailwindcss/postcss`
+- `app/` — App Router; `(dashboard)/` route group (add-job, jobs, stats) + `provider.tsx`
+- `utils/` — server actions (`actions.ts`), shared types (`types.ts`), nav links
+- `lib/` — Prisma client singleton (`prisma.ts`) and generated client (`generated/prisma`, gitignored)
+- `components/` — feature components + `ui/` shadcn components; `components.json`
+- `proxy.ts` — Clerk middleware
+
+## Prisma
+
+- Client generates into `lib/generated/prisma` (gitignored) — import from `@/lib/generated/prisma`, **not** `@prisma/client`
+- MongoDB models: `String @id @default(auto()) @map("_id") @db.ObjectId`
+- `postinstall` runs `prisma skills sync || exit 0`; `npm run contract:emit` also available
 
 ## Gotchas
 
-- **Tailwind v4 has no `tailwind.config.js`** — theme customization goes in `app/globals.css` using `@theme` directive
-- **ESLint uses flat config** — no `.eslintrc.*` files; config is in `eslint.config.mjs`
-- **Next.js 16 docs are local** — always check `node_modules/next/dist/docs/` before writing route handlers, layouts, or using Next.js APIs
+- `package.json` sets `"type": "module"` — `.js` files are treated as ESM, so CommonJS configs (e.g. commitlint) must be `.cjs` or they crash at runtime
+- Tailwind v4: no `tailwind.config.js`; theme customization goes in `app/globals.css` via `@theme`
+- Next.js 16 docs are local — check `node_modules/next/dist/docs/` before writing routes, layouts, or API code
+- `.env` is gitignored — copy `.env.example` before running Prisma; requires MongoDB >= 8
+- `.github/workflows/opencode.yml` runs an opencode job on PR/issue comments starting with `/oc` or `/opencode`
