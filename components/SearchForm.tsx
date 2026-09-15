@@ -18,7 +18,7 @@ const SearchForm = () => {
 
   const router = useRouter();
   const pathname = usePathname();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const params = new URLSearchParams();
 
